@@ -1,0 +1,448 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[usenames, dvipsnames]{color} % Cool colors
+\usepackage{enumerate, amsmath, amsthm, amssymb, mathrsfs, algorithm, algpseudocode, fontawesome, pifont, subfig, fullpage, csquotes, dashrule, tikz, bbm, booktabs, bm, hyperref, wasysym}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage[numbers]{natbib}
+\usepackage[normalem]{ulem}
+
+% --- Misc. ---
+\hbadness=10000 % No "underfull hbox" messages.
+\setlength{\parindent}{0pt} % Removes all indentation.
+
+% Nice coloring of references.
+\usepackage{hyperref}
+
+\newcommand\BibTeX{B{\sc ib}\TeX}
+
+\title{NeurIPS 2019 Notes \\ \Large{Vancouver, BC, Canada}}
+\author{Chester Holtz\footnote{\url{https://cseweb.ucsd.edu/\~chholtz/}} \\ \url{chholtz@eng.ucsd.edu}}
+\date{December 2019}
+
+\begin{document}
+
+\maketitle
+
+%\section*{Contents}
+
+\section{Friday December 13 Workshops}
+
+\subsection{Workshop: Graph Representation Learning}
+
+\section{Saturday December 14 workshops}
+
+\subsection{Workshop: Neuro - AI}
+
+\subsubsection{8:15 - 8:30 Opening Remarks Dr. Guillaume Lajoie \& students}
+
+\textbf{Main Goal for the workshop:} Explore new future directions at the intersection of Neuroscience and artificial intelligence and machine learning and how these fields can influence eachother. Great submissions this year! \\
+
+Some participation statistics \& technical novelties about the workshop this year (Jessica Thompson \& Maximilian Puelma Touzel)
+\begin{itemize}
+\item 62 submissions
+\item 50 acceptances
+\item 3 poster prizes
+\item ~84\% of authors reported male
+\item workshop livestreamed on yt \& dedicated live twitter feeds (\#NeuroAIWorkshop)
+\end{itemize}
+
+\subsubsection{8:30 - 9:00 Invited Talk: Hierarchical Reinforcement Learning: Computational Advances and Neuroscience Connections by \textit{Dr. Doina Precup}}
+First talk of the workshop! \\
+
+\textbf{Main Idea:} Reinforcement learning is precisely at the intersection of AI and neuroscience. \\
+
+RL \& Automated agents: agents embedded in an environment, perceives the state of the environment, can take actions, and receives feedback. \textbf{Goal} is to optimized long-term reward (expectation of cumulative reward). \\
+
+RL techniques are exciting - even though the high-level description of RL is simple, the associated algorithms have lead to empirical successes (Alpha Go, which receives a single, delayed reward at the end of the game). Is trained by playing games against itself. \\
+
+Basic Principles of RL
+\begin{itemize}
+    \item All ML is driven to minimize errors (standard model)
+    \item In RL, the algorithm makes predictions about the expected future cumulative reward
+    \item These predictions should be consistent - i.e. similar to each other over time
+    \item Errors are computed between predictions made at consecutive timesteps 
+    \item If the situation has ``improved'' since the last time step, pick the previous action more often
+\end{itemize}
+
+\begin{itemize}
+    \item $\pi$ is a policy (distribution over actions given the states)
+    \item Value function of a state $s$ at time $t$ given policy $\pi$ is nothing but the expectation of the future cumulative reward: $$v_\pi(s) = \mathbb{E}[\sum_{k=t}^\infty r(S_k, A_k)\gamma^{k-t}| S_t=s, A_{t:\infty} \sim \pi]$$
+    \item $\gamma \in [0,1]$ is the discount factor (weight of ordered sequence of rewards). Can also be thought of as a trajectory term
+\end{itemize}
+
+Learning Values: Temporal-Difference error
+Comparing predictions at adjacent time-steps (``consistency'')
+\begin{itemize}
+    \item Value estimate at time $t$: $v(S_t)$, at $t+1$: $r(S_t, A_t) + \gamma v(S_{t+1})$
+    \item Temporal-difference error: $$\delta_t = r(S_t, A_t) + \gamma v(S_{t+1}) - v(S_t)$$
+    \item Note that if $v$ is parametric (can be a NN) and differentiable, so we can apply something like gradient descent! $w_{t+1} = w_t + \alpha \delta_tv_w(S_t)$
+    \item Furthermore, \cite{schultz97} + follow-up demonstrate that TD-errors model the activity of dopamine neurons in the brain [although GD is not biologically plausible?]!
+\end{itemize}
+
+Control: Actor-critic architecture \\
+
+An agent which has both procedural and predictive knowledge (value fn) to drive policy to pick better actions. Take data $\rightarrow$ update value function using TD errors $\rightarrow$ update policy. 
+\begin{figure}
+  \centering
+      \includegraphics[width=0.5\textwidth]{images/aca.png}
+  \caption{}
+\end{figure}
+\begin{itemize}
+    \item Paramaters of the policy move to make a more likely action that has positive ``advantage'' - how much better is an action compared to a weighted average over all actions. $$A(s,a) = r(s,a) + \gamma \mathbb{E}[v(s') | s,a] - v(s)$$
+    \item \cite{ODoherty04}: fMRI evidence that dorsolateral striatum (?) implements an actor ventral straitum (?) a critic.
+\end{itemize}
+
+Main of hierarchical reinforcement learning: A dinner cooking robot:
+\begin{itemize}
+    \item High-level steps: Choose a recipe, make a grocery list, \ldots
+    \item Medium-level steps: get a pot, put ingredients in the pot stir until smooth, \ldots
+    \item Low-level steps: precise movements of appendages
+    \item All have to be seamlessly integrated\ldots
+\end{itemize}
+Many time-scales, many spatial scales, sensory (multi-modal) scales, etc, \ldots. Subtle changes in environment (e.g. cats) necessitate reactions in real-time. Abstract concepts, cause and effect. \\
+
+\textbf{Options Framework}\cite{Sutton98}: generalizing the notion of actions - we would like something like a controller in continuous time
+\begin{itemize}
+    \item An option is defined by a tuple $\langle I_\omega(s), \pi_\omega(a|s), \beta_\omega(s) \rangle$
+    \item initiation function (precondition)
+    \item internal policy (behavior)
+    \item termination function (post-condition)
+\end{itemize}
+E.g. robot navigation: if no obstacle in front (precondition) go forward (behavior) until something is too close (termination). Unlike classical MDPs/SMDPS, the options framework over an MDP considers multiple levels of abstractions [what about hierarchical contextual bandits framework?] \\
+
+\cite{Botvinick08} propose some neural correlates of options \\
+
+How can we think of options? ``little behavioral programs'' that come with predictive knowledge that can be learned via TD-error updates. \\
+
+Intermediate result: option models speed up planning \\
+
+Generalized actions, now generalize value functions - generalized rewards (many reward functions) \& continuation functions (depends on states). Given a cumulant (state-action context) function $c$, state-dependent continuation function $\gamma$, and policy $\pi$, a generalized value function is defined to be 
+$$v_{\pi, \gamma, c} = \mathbb{E}[\sum_{k=t}^\infty C_{k+1}\prod_{i=t+1}^k \gamma(S_i)|S_t = s, A_{t:\infty}\sim \pi]$$
+See Horde Architecture \cite{Sutton et al 2011} \\
+
+Example: Successor Representations - discounted occupancy of a state (\cite{Dayan93, Barreto16}). Represents each state as a distribution over future trajectories from that state - vector-valued GVFs where features are cumulants. 
+\begin{itemize}
+\item spatial property \cite{Barreto16}: $v_{w^Tc,\gamma,\pi}(s) = w^Tv_{c,\gamma,\pi}(s)$
+\item \cite{Gershman 2018}: maybe dopamine yields a vector-valued signal for updating successor representations (?)
+\end{itemize}
+
+Frontier: Option Discovery - Options can be designed (e.g. pre-programmed controllers in robotics), subgoals or secondary reward structures can be provided \cite{Sutton98}, intrinsic motivation: \cite{Barto et al 2014}. \\
+
+Bottleneck states: \cite{Solway2014} discover bottleneck states in navigation graph \& neural correlates, \& \textbf{random subgoals} require time \& data \cite{mann15} [what about self-supervised learning \& transfer-learning?], option-critic architecture \cite{BaconHP16} - results match or exceed Q-networks on atari. \\
+
+\textbf{Overall Conclusions}
+\begin{itemize}
+    \item Reinforcement learning has been a bridge between CS, NS, Cog-Sci
+    \item Hierarchical reinforcement learning is a natural approach for solving large problems efficiently
+    \item Deliberation cost and intrinsic rewards help learning
+    \item learning jointly across temporal and state representations is beneficial \cite{Franklin2018}
+    \item efficient option discovery is future work
+    \item how can we model continual learning effectively?
+\end{itemize}
+
+\textbf{Questions} \\
+
+Q. Automatic selection of options? \\
+
+A. Option critic takes as a parameter the number of options and uses any actor-critic algorithm for learning the options. The main problem is reward optimization $\rightarrow$ options not necessary since policy will be sufficient, so options ``dissolve''. Need to give a little more knowledge/penalization/regularization to penalize switching/termination to encourage options to ``stay long''. Can also provide curiosity/intrinsic motivation/subgoals. No formal methods for deciding subgoals. \\
+
+Q. Is it possible to combine the options framework with deep learning? \\
+
+A. Option-critic architecture is a deep RL architecture. Using RL to drive the learning in the deep network exactly in the way you learn a value function via backprop.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{9:00 - 9:30 Invited Talk: Deep learning without weight transport by \textit{Dr. Tim Lillicrap}}
+
+Q. What are the fundamental principles of computational neuroscience? \\
+
+A. Network architectures, loss functions, learning rules, environment/data (to a lesser extent)? \\
+
+Q. Why these things? \\
+
+A. Don't know how to understand neural architectures that recognize objects, but can understand how to build them (interested in principles). We know of and want learning rules that are powerful enough to solve hard problems (i.e. we know that the brain solves hard problems) and \textbf{respect biological constraints}. \\
+
+One problem Brains have: credit assignment (given sensory information to be transformed into a judgement, in order to make good adjustments to synaptic connections, need to know what the associated judgments are). Solution used in NNs is backprop. \\
+
+Credit assignment via backprop works well in practice, but doesn't respect biological constraints. 
+$$ 
+\delta W_0 \propto e\cdot W_1^T \cdot \sigma'(u) \cdot x
+$$
+Q. Why? \\
+
+A. (1) Error term (2) \textbf{transpose of downstream weights} (``downstream'' knowledge \cite{Grossberg87}, weight transport problem) (3) derivative of activation function (normal neurons have spiking) (4) Separate forward and backward passes (synchronization) \\
+
+More likely algorithms are weight perturbation \& activity perturbation - correlating noise in the synapse with changes in the error (but really slow in practice) \\
+
+Q. Do/can existing biologically-motivated learning algorithms scale up to solve hard credit assignment problems? \\
+
+Constraints on learning rules:
+\begin{itemize}
+    \item \textcolor{green}{No weight transport (e.g. with weight transposes)}
+    \item \textcolor{yellow}{No weight tying (e.g. with convolutional kernels)}
+    \item \textcolor{red}{Feedback of signed errors?}
+    \item \textcolor{red}{Use continuous (rather than spiking) signals}
+    \item \textcolor{red}{Violate Dale's law}
+    \item \textcolor{red}{Local activation derivatives}
+    \item \textcolor{red}{Separate forward/backward passes}
+    \item \textcolor{red}{Your personal complaint here...}
+\end{itemize}
+
+A. Short story: \textbf{NO} \cite{Bartunov18} \\
+
+Two approaches that learn the backward pathway \cite{Akrout19}: 
+\begin{itemize}
+    \item Weight mirrors: Directly learn transposes in a mirroring phase
+    \item Kollen-Pollack (1994): Update both forward and backward weights using the same rule, and rely on weight decay
+\end{itemize}
+
+Weight Mirroring: described by two modes. \\
+
+``Engaged mode'' (like backprop):
+\begin{itemize}
+    \item $\delta_l = \phi'(y_l)B_{l+1}\delta_{l+1}$
+    \item $\Delta W_{l+1} = -\eta_W \delta_{l+1}y_l^T$
+\end{itemize}
+``Mirror mode'' (like hebbian updates):
+\begin{itemize}
+    \item $y_l \sim N(0,I)$
+    \item $\Delta B_{l+1} = \eta_B \delta_l \delta_{l+1}^T$
+\end{itemize}
+
+Why weight mirroring works [linear case, for nonlinear case see paper]
+\begin{itemize}
+\item $\Delta B = \eta xy^T = -\eta \frac{\delta f}{\delta B}$
+\item $x \sim N(0,I), y = Wx$
+\item $\mathbb{E}[xy^T] = \mathbb{E}[xx^TW^T] = \mathbb{E}[xx^T]W^T = \sigma^2 W^T$
+\item Decay $W$s to prevent divergence
+\end{itemize}
+
+Kolen-Pollack update (no modes): 
+\begin{itemize}
+    \item $\Delta B_{l+1} = -\eta y_l \delta_{l+1}^T$
+    \item $\Delta W_{l+1} = -\eta_W \delta_{l+1} y_l^T - \lambda W_{l+1}$
+    \item $\Delta B_{l+1} = -\leta_W y_l \delta_{l+1}^T - \lambda B_{l+1}$
+    \item Note both $W$ and $B$ are decayed
+\end{itemize}
+
+Nice results for both methods on a deep network! Perform virtually as well as well-tuned backprop (drops correspond to learning rate schedule). \\
+
+\textbf{Main Conclusions} 
+\begin{itemize}
+    \item Constraints from both sides are being met
+    \item New machine learning algorithms that obey known constraints of biology and still perform well on hard tasks 
+    \item Neuroscience experiments aimed at explicitly identifying the role of feedback in synaptic plasticity.
+    \item Need to hold ourselves accountable when developing new algorithms
+    \item Backprop-like mechanisms appear to be crucial for learning complex functions with deep networks
+    \item To make effective weight updates, the structure of the downstream function should be communicated upstream
+\end{itemize}
+
+Addendum: How should we infer principles in the brain?
+\begin{itemize}
+    \item How should be make inferences about the underlying \textit{architecture}, \textit{loss}, and \textit{learning rules} in the brain?
+    \item What would a scalable approach to inference look like?
+    \item What neurological data should we collect to feed these inference processes?
+    \item Can we learn to do this in-silico? [e.g. recovery of learning rules from simulated data]
+\end{itemize}
+
+\textbf{Questions} \\
+
+Q. What's known about the accuracy to make the Pollack algorithm work? \\
+
+A. Great question - nothing is known about the accuracy. A related question is skeptical about global corralitive signal may not be sufficient to learn to solve hard problems. Backprop may be good enough. What dimensionality of error signal do you need to be able to send backwards to learn hard problems? The answer may be unknown. E.g. what can you get away with to learn to solve imagenet?  \\
+
+Q. What do you think about recent methods relaxing activations - noisy/auxilliaray variable approaches. Address the issue of noisy activations (method of auxilliarry coordinates, etc.) \\
+
+A. Super interesting! Have their origins in the mid-late 80s - see O'Reily, 96 who looked at these relaxations seriously. One issue encountered is that these methods are slow, and the relaxations have to be ``long'' to perform on hard tasks. Still worth looking into further, but hard to scale on hard problems/deep networks \\
+
+Q. Backprop \& modeling the brain in a supervised setting. Want to prefer unsupervised methods. \\
+
+A. Not sure - whether you do VAE/GAN/etc. all are using backprop to do credit assignment. Not using ``labeled errors', but still using backprop. Kind of stuck with backprop for credit assignment in deep networks. The question is how to do local credit assignment in a large network as you do unsupervised learning? \\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{9:30 - 9:45 Contributed Talk: Eligibility traces provide a data-inspired alternative to backpropagation through time. \textbf{Guillaume Bellec}, Franz Scherr, Elias Hajek, Darjan Salaj, Anand Subramoney, Robert Legenstein, \textit{Wolfgang Maass}}
+
+``I agree with Tim Lillicrap - It's a good tool to benchmark learning algorithms on machine learning problems because I realize they are not all functional and there is a lot hidden in that a lot of algorithms are functional and a lot are not.'' In this talk, Recurrent Neural Networks are the focus and we provide an alternative to Backpropagation through time. \\
+\begin{figure}
+  \centering
+      \includegraphics[width=0.5\textwidth]{images/eprop.png}
+  \caption{}
+\end{figure}
+
+Biological motivation for e-prop (eligibility propagation \& Hebbian Learning) review from \cite{Gerstner18} the protocol to measure synaptic plasticity in the brain poke electrodes in pre and post-synaptic neurons \& look at... \\
+\begin{figure}
+  \centering
+      \includegraphics[width=0.5\textwidth]{images/3fl.png}
+  \caption{}
+\end{figure}
+
+\textbf{Defn}: An abundance of trace events in the recent past in the internal states of neurons and synapses of the brain, often referred to in models as \textbf{eligibility traces}. \\
+
+A lot of empirical support for significant delay between pre and post-pairing. \\
+
+BPTT: forward propagation over entire sequence, backpropagate errors through unrolled recurrent network. - not acceptable for Brain. \\
+
+E-prop - Top-down learning signal ($L_j^t$) based on a new ``local'' factorization of the loss gradient. \\
+
+Given any loss function $E$, compute the gradient as $\frac{dE}{dW_{ji}} = \sum_t L_j^te_{ji}^t$ where $L_j^T$ is the learning signal and $e^t_{ji}$ is the eligibility trace, 
+$$\frac{dE}{dW_{ji}} = \sum_t \frac{dE}{dz_j^t}\cdot[\frac{dz_j^t}{dW_{ji}}]_{local}$$,
+where $z_j^t$ is the (spiking - \textbf{new}) neuron output.
+
+\textit{Proof sketch}:
+
+given hidden state $h_j^t$ (voltage or memory cell dynamics) and observable state $z_j^t$ (spike of LSTM output), 
+\begin{itemize}
+    \item Separate (isolate) the hidden neural dynamics $\frac{\delh_j^t}{\del h_j^{t-1}}$ from the observable ones & push into eligibility trace
+    \item Interchange two sums, to propagate hidden dynamics forward and the rest backward.
+\end{itemize}
+
+[see the paper for full proof, complexity analysis, & comparisons] \\
+
+In practice, require online approximation of the learning signal since future is masked (unknown), but eligibility traces can still do hard credit assignment with delayed feedback. \\
+
+Next slides on derivation of Reward-based e-prop from TD-Errors (RL-based, not fully supervised) experiments on Atari games [similar performance to A3C algorithms]. \\
+
+\textbf{Main Conclusions} 
+\begin{itemize}
+    \item A new factorization of the error gradient in RNNs avoids BPTT and becomes compatible with the three-factor learning rule framework
+    \item E-prop approaches the performance of BPTT in machine learning benchmarks
+    \item Experimental prediction: comparing notion of eligibility trace to standard RL-version of ET are different due to notion of temporal neural dynamics (?)
+\end{itemize}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{10:30 - 11:00 Invited Talk: Computing and learning in the presence of neural noise by \textit{Dr. Cristina Savin}}
+
+Interface between machine learning and neuroscience: building parallels between artificial and biological circuits - often the focus is on similarity \& points of contact. This talk focuses on a fundamental difference: the precense of intrinsic noise. Trained neural networks correspond to deterministic functions. NOT the case for biological neurons across brain regions, which may react differently to repeated identical stimuli ``neural variability''. What does this computation mean? \\
+
+Inescapable ``bug'' of biological wetware: the main computational challenge that the brain faces is overcoming its own internal noise via active reconfiguration. \\
+
+Feature: Intrinsic stochastic can be recruited for useful computational goals, e.g. representing uncertainty.  \\
+
+This talk will introduce stochasticity for learning. \\
+
+\begin{figure}
+  \centering
+      \includegraphics[width=0.5\textwidth]{images/stochnn.png}
+  \caption{}
+\end{figure}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{11:00 - 11:30 Invited Talk: Universality and individuality in neural dynamics across large populations of recurrent networks by \textit{Dri. David Sussillo}}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{11:30 -11:45 Contributed talk: How well do deep neural networks trained on object recognition characterize the mouse visual system? \textit{Santiago A. Cadena}, Fabian H. Sinz, Taliah Muhammad, Emmanouil Froudarakis, Erick Cobos, Edgar Y. Walker, Jake Reimer, Matthias Bethge, Andreas Tolias, Alexander S. Ecker}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{11:45 - 12:00 Contributed talk:  Functional Annotation of Human Cognitive States using Graph Convolution Networks \textit{Yu Zhang}, Pierre Bellec}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{14:00-14:30 Invited Talk: Simultaneous rigidity and flexibility through modularity in cognitive maps for navigation by \textit{Dr. Ila Fiete}}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{14:30 - 15:00 Invited Talk: Theories for the emergence of internal representations in neural networks: from perception to navigation by \textit{Dr. Surya Ganguli}}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{15:00-15:15 Contributed talk: Adversarial Training of Neural Encoding Models on Population Spike Trains \textit{Poornima Ramesh}, Mohamad Atayi, Jakob H Macke*}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{15:15-15:30 Contributed talk: Learning to Learn with Feedback and Local Plasticity \textit{Jack Lindsey}}
+
+\textbf{Questions} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{16:45-17:15 Invited Talk: Sensory prediction error signals in the neocortex by \textit{Dr. Blake Richards}}
+
+Presentation on data and how to incorporate machine learning into neuroscience - cost functions, learning rules involved in neuronal circuits. \\
+
+Question: Does the neocortex try to predict incoming stimuli using top-down connections (i.e. a hierarchical generative model) and does it use prediction errors for credit assignment? \cite{Lotter16}. \\
+
+Partial Answer: To answer this question experimentally we can't only look for signatures of prediction errors, we need to consider the specific architecture of the neocortical microcircuit \cite{Harris13}. \\
+
+A lot of evidence suggests that our brains are sensitive to unobserved stimuli (L2/3) - e.g. \cite{Zmarz16, Homann17} reported that violations of expected visual flow induce strong responses in L2/3 neurons (2-photon calcium imaging) [Mice in a virtual reality environment!]. \\
+
+Three unresolved questions \cite{Harris13}:
+\begin{itemize}
+    \item What is happening in the apical dendrites that are receiving the top-down inputs
+    \item What is happening in the other cells in the microcircuit that can project up the hierarchy?
+    \item What happens over the course of time, and over multiple sessions of exposure to unexpected stimuli?
+\end{itemize}
+
+\textit{Proposal for data accepted by the Allen Institute for Brain Science OpenScope program.}\footnote{link}
+ \begin{itemize}
+     \item Randomly re-oriented Gabor sequences
+     \item Hallway visual flow perturbations
+     \begin{figure}
+  \centering
+      \includegraphics[width=0.5\textwidth]{images/hallway.png}
+  \caption{}
+\end{figure}
+ \end{itemize}
+ 
+Recovery of perturbations - ``stimulus direction'' is possible by linearly decoding latent neuronal activity (better than chance for ~2-dozen data points), responses not driven by running increases or pupil dilations, although both lead to higher df/F. \\
+
+Interestingly, increase in neuronal activity for subsequent trials for Gabor task. \\
+
+\textbf{Conclusions}
+The open-loop data supports the idea that there are prediction error signals driven by top-down info, with different parts of the circuit engaging in different computations. \\
+
+The cumulative data in the field points strongly towards an unsupervised predictive hierarchical model in the neocortex. \\
+
+The next steps are to further understand the different parts of the circuit and determine how it is learning. \\
+
+\textbf{Questions} \\
+
+Q. Why no L4 neurons to understand top-down processing? \\
+
+Richards: Reasonable next step. We didn't do it. Would like to see experiments reproduced in all cell-types. \\
+
+Q. What is the somatic responses look like when the error responses are happening? \\
+
+Richards: Found a lot of variability in synaptic responses, but L5 pyramidal neurons showed fairly ``clear'' response in burst session that died over time - didn't mention it due to variability. \\
+
+Q. Recently @ Princeton, related study demonstrated specific responses (specific neuronal activity) did you find this? \\
+
+Richards: Generally, different ROIs respond to different orientations, which is why we can decode. For the hallway, was some specificity, but no clear split between ``error neurons' and ``non-error neurons'' \\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{17:15 -18:00 Panel Discussion: A new hope for neuroscience}
+
+Pannelists: Yoshua Bengio, Blake Richards, Timothy Lillicrap,  Ila Fiete, David Sussillo, Doina Precup, Konrad Kording, Surya Ganguli \\
+
+Goal: explore future directions surrounding the intersection of AI and neuroscience \\
+
+Q. True or false: to truly understand the brian, one needs to study artifical intelligence.  \\
+
+A. \textbf{T: } BR, IF, YB, TL, \~DP, \~SG \textbf{F: }DS \\
+
+\bibliography{nn}
+\bibliographystyle{abbrv}
+
+\end{document}
