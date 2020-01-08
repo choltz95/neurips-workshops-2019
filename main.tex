@@ -28,13 +28,13 @@
 
 \section{Friday December 13 Workshops}
 
-\subsection{Workshop: Graph Representation Learning}
+\subsection{Graph Representation Learning}
 
 \section{Saturday December 14 workshops}
 
-\subsection{Workshop: Neuro - AI}
+\subsection{Neuro - AI}
 
-\subsubsection{8:15 - 8:30 Opening Remarks Dr. Guillaume Lajoie \& students}
+\subsubsection{8:15 - 8:30 Opening Remarks by \textit{Dr. Guillaume Lajoie \& students}}
 
 \textbf{Main Goal for the workshop:} Explore new future directions at the intersection of Neuroscience and artificial intelligence and machine learning and how these fields can influence eachother. Great submissions this year! \\
 
@@ -86,7 +86,7 @@ An agent which has both procedural and predictive knowledge (value fn) to drive 
 \begin{figure}
   \centering
       \includegraphics[width=0.5\textwidth]{images/aca.png}
-  \caption{}
+  \caption{Actor-critic framework}
 \end{figure}
 \begin{itemize}
     \item Paramaters of the policy move to make a more likely action that has positive ``advantage'' - how much better is an action compared to a weighted average over all actions. $$A(s,a) = r(s,a) + \gamma \mathbb{E}[v(s') | s,a] - v(s)$$
@@ -119,19 +119,19 @@ Intermediate result: option models speed up planning \\
 
 Generalized actions, now generalize value functions - generalized rewards (many reward functions) \& continuation functions (depends on states). Given a cumulant (state-action context) function $c$, state-dependent continuation function $\gamma$, and policy $\pi$, a generalized value function is defined to be 
 $$v_{\pi, \gamma, c} = \mathbb{E}[\sum_{k=t}^\infty C_{k+1}\prod_{i=t+1}^k \gamma(S_i)|S_t = s, A_{t:\infty}\sim \pi]$$
-See Horde Architecture \cite{Sutton et al 2011} \\
+See Horde Architecture \cite{Sutton11} \\
 
 Example: Successor Representations - discounted occupancy of a state (\cite{Dayan93, Barreto16}). Represents each state as a distribution over future trajectories from that state - vector-valued GVFs where features are cumulants. 
 \begin{itemize}
 \item spatial property \cite{Barreto16}: $v_{w^Tc,\gamma,\pi}(s) = w^Tv_{c,\gamma,\pi}(s)$
-\item \cite{Gershman 2018}: maybe dopamine yields a vector-valued signal for updating successor representations (?)
+\item \cite{Gardner2018}: maybe dopamine yields a vector-valued signal for updating successor representations (?)
 \end{itemize}
 
-Frontier: Option Discovery - Options can be designed (e.g. pre-programmed controllers in robotics), subgoals or secondary reward structures can be provided \cite{Sutton98}, intrinsic motivation: \cite{Barto et al 2014}. \\
+Frontier: Option Discovery - Options can be designed (e.g. pre-programmed controllers in robotics), subgoals or secondary reward structures can be provided \cite{Sutton98}, intrinsic motivation. \\
 
 Bottleneck states: \cite{Solway2014} discover bottleneck states in navigation graph \& neural correlates, \& \textbf{random subgoals} require time \& data \cite{mann15} [what about self-supervised learning \& transfer-learning?], option-critic architecture \cite{BaconHP16} - results match or exceed Q-networks on atari. \\
 
-\textbf{Overall Conclusions}
+\textbf{Conclusions}
 \begin{itemize}
     \item Reinforcement learning has been a bridge between CS, NS, Cog-Sci
     \item Hierarchical reinforcement learning is a natural approach for solving large problems efficiently
@@ -228,7 +228,7 @@ Kolen-Pollack update (no modes):
 
 Nice results for both methods on a deep network! Perform virtually as well as well-tuned backprop (drops correspond to learning rate schedule). \\
 
-\textbf{Main Conclusions} 
+\textbf{Conclusions} 
 \begin{itemize}
     \item Constraints from both sides are being met
     \item New machine learning algorithms that obey known constraints of biology and still perform well on hard tasks 
@@ -282,7 +282,7 @@ Biological motivation for e-prop (eligibility propagation \& Hebbian Learning) r
   \caption{}
 \end{figure}
 
-\textbf{Defn}: An abundance of trace events in the recent past in the internal states of neurons and synapses of the brain, often referred to in models as \textbf{eligibility traces}. \\
+\textbf{Definition} Eligibility Traces: An abundance of trace events in the recent past in the internal states of neurons and synapses of the brain, often referred to in models as \textbf{eligibility traces}. \\
 
 A lot of empirical support for significant delay between pre and post-pairing. \\
 
@@ -308,14 +308,14 @@ In practice, require online approximation of the learning signal since future is
 
 Next slides on derivation of Reward-based e-prop from TD-Errors (RL-based, not fully supervised) experiments on Atari games [similar performance to A3C algorithms]. \\
 
-\textbf{Main Conclusions} 
+\textbf{Conclusions} 
 \begin{itemize}
     \item A new factorization of the error gradient in RNNs avoids BPTT and becomes compatible with the three-factor learning rule framework
     \item E-prop approaches the performance of BPTT in machine learning benchmarks
     \item Experimental prediction: comparing notion of eligibility trace to standard RL-version of ET are different due to notion of temporal neural dynamics (?)
 \end{itemize}
 
-\textbf{Questions} 
+\textbf{Questions} \\ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -331,7 +331,7 @@ This talk will introduce stochasticity for learning.
 \begin{figure}
   \centering
       \includegraphics[width=0.5\textwidth]{images/stochnn.png}
-  \caption{two tasks: autoencoder \& binary classification}
+  \caption{Stochastic NN \& two tasks: autoencoder \& binary classification}
 \end{figure}
 
 Adding brownian noise too each neuron independently in the neural network.
@@ -346,7 +346,9 @@ Deriving optimal learning (gradient ascent) \cite{Williams1992, Fiete2006, Fiete
 $$
 \delta w_{ij} \propto \textcolor{blue}{\alpha(Dr,s)}\textcolor{green}{(r_ir_j - \langle r_ir_j \rangle_{p(r|s)})} - \textcolor{red}{\lambda w_{ij}}
 $$
-\textcolor{blue}{reward}, \textcolor{blue}{Hebb}, \textcolor{blue}{resource constraint} \\
+\begin{center}
+\textcolor{blue}{reward} - \textcolor{green}{Hebb} - \textcolor{red}{resource constraint}
+\end{center}
 
 This is relevant to adding noise independently to neurons (?) \\
 
@@ -357,12 +359,12 @@ This is relevant to adding noise independently to neurons (?) \\
     \item More noise in the encoder $\rightarrow$ slower learning, poorer convergence due to variance of the gradients 
     \item Intrinsic stochasticity needed for task-dependent learning
     \item Active compensation of negative effects of noise
-    \item [limitation] Instantaneous feedback $\rightarrow$ temporal credit assignment
-    \item [limitation] Symmetric connectivity $\rightarrow$ asymmetric
-    \item [limitation] Variance of gradients $\rightarrow$ more biological detail
+    \item (limitation) Instantaneous feedback $\rightarrow$ temporal credit assignment
+    \item (limitation) Symmetric connectivity $\rightarrow$ asymmetric
+    \item (limitation) Variance of gradients $\rightarrow$ more biological detail
 \end{itemize}
 
-\textbf{Questions}  \\
+\textbf{Questions} \\
 
 Q. More probable stimuli require more neurons how is it relevant to shannon code theory (more probable strings $\rightarrow$ smaller code). Is there a loss in efficiency? \\ 
 
@@ -374,7 +376,7 @@ A. Equating the two - the output of the network is the only thing that matters.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{11:00 - 11:30 Invited Talk: Universality and individuality in neural dynamics across large populations of recurrent networks by \textit{Dri. David Sussillo}}
+\subsubsection{11:00 - 11:30 Invited Talk: Universality and individuality in neural dynamics across large populations of recurrent networks by \textit{Dr. David Sussillo}}
 
 Treatment: neural networks as artifical model organisms. Can train neural networks to accomplish tasks analogous to those studied in animals, full spec. of paramters (as opposed to brains), utilize optimization, reverse engineering, ability to conduct huge experiments. \\
 
@@ -400,19 +402,18 @@ Identified structure via CCA among different network types.
 \begin{figure}
   \centering
       \includegraphics[width=0.5\textwidth]{images/nnclust.png}
-  \caption{}
+  \caption{Clusters of different RNN-type architectures trained on simple tasks}
 \end{figure}
 
-\textbf{Defn} Fixed point: 
+\textbf{Definition} Fixed point: 
 \begin{itemize}
     \item $h_t = F(h_{t-1},x)$
     \item $h^* = F(h^*, x^* = 0)$
 \end{itemize}
 
-Can study linearized dynamics (recovered numerically) around fixed points. 
+Can study linearized dynamics (recovered numerically) around fixed points. \\
 
-\textbf{Main conclusions} \\
-
+\textbf{Conclusions}
 \begin{itemize}
 \item Representational geometry differs between models.- thus geometry may be useful in piking models closer to biological circuits
 \item The underlying fixed point topology may still be the same in the RNN (e.g. all models had line attractors in the integration task)
@@ -439,7 +440,7 @@ A. No, but that is a great line of future research.
 
 We know that neighboring points in visual space map to neighboring points in cortical space \cite{Wang2007}. \\
 
-Record \~5000 neurons per area in visual area in response to \~5000 images from iamgenet. Interested in mapping from input image + other variables to neural responses. The other variables include running speed, pupil dilation and pupil directions. The mapping function is chosen to be a convolutions neural network (VGG-16). Recover the hypercolumns. \\
+Record $\sim$5000 neurons per area in visual area in response to $\sim$5000 images from iamgenet. Interested in mapping from input image + other variables to neural responses. The other variables include running speed, pupil dilation and pupil directions. The mapping function is chosen to be a convolutions neural network (VGG-16). Recover the hypercolumns. \\
 
 C1. What is the right resolution of input images? \\
 
@@ -449,7 +450,7 @@ C3. Is the model describing responses at all? - Captures between 70 and 80 perce
 
 C5. Taking the exact same architecture with rith random weights, performance is pretty similar. - Is the goal with what you are training the network driving performance for predicting neural activity? - The number of layers is critical to match neural activity. \\
 
-\textbf{Main Conclusion} \\
+\textbf{Conclusions}
 \begin{itemize}
     \item Optimizing input resolution is critical for layer-to-area correspondence
     \item Models with random features can be baselines for goal-driven modeling
@@ -487,7 +488,7 @@ Q. What's the motivation for using GCNs as opposed to classical image analysis t
 
 A. Memory constraints \\
 
-\textbf{Questions} 
+\textbf{Questions} \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -502,7 +503,7 @@ General non-Euclidean semantic inference using grid and place cells. \\
 
 Plug for Kernel RNN learning (KeRNL): simple, biologically plausible alternative to BPTT \cite{roth2018kernel} \\
 
-Apply topological data analysis to show a \~2000 neuron circuit \cite{Chaudhuri2019} lie on a 1D ring during unconstrained activity \& during REM sleep via topological data analysis \& co-embedding. \\
+Apply topological data analysis to show a $\sim$2000 neuron circuit \cite{Chaudhuri2019} lie on a 1D ring during unconstrained activity \& during REM sleep via topological data analysis \& co-embedding. \\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -516,7 +517,7 @@ Trained a CNN to mimic salamander retina responses to natural scenes with good r
 
 Try to go from deep networks to simple and interpretable subcircuits that are essential for generating reponses from stimuli via model reduction. Able to map these subcircuits to neuronal circuits. \\
 
-\textbf{Main conclusions}: \\
+\textbf{Conclusions}
 \begin{itemize}
 \item Interpretable deep learning for the brain through model reduction
 \item Explaining the structure of the retina through auto-encoders
@@ -530,7 +531,7 @@ A. We also used weight decay, etc.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{15:00-15:15 Contributed talk: Adversarial Training of Neural Encoding Models on Population Spike Trains \textit{Poornima Ramesh}, Mohamad Atayi, Jakob H Macke*}
+\subsubsection{15:00-15:15 Contributed talk: Adversarial Training of Neural Encoding Models on Population Spike Trains \textit{Poornima Ramesh}, Mohamad Atayi, Jakob H Macke}
 
 Neural activity is driven by both stimulus (signal) and latent variables (noise). \\
 
@@ -581,7 +582,7 @@ The hope is that by introducing feedback matrices, we enable deep credit assignm
 
 Tried this approach on two ``families'' of tasks: multiple sinosoidal regression and one-shot classification tasks with hebbian inner updates and varying number of ``plastic'' layers. \\
 
-\textbf{Questions} 
+\textbf{Questions} \\ 
 
 Q. You meta learn both the initialization weights and feedback weights? \\
 
@@ -617,7 +618,7 @@ Three unresolved questions \cite{Harris13}:
      \begin{figure}
   \centering
       \includegraphics[width=0.5\textwidth]{images/hallway.png}
-  \caption{}
+  \caption{Hallway visual flow perturbation, couldn't get a pic of the Gabor orientation task.}
 \end{figure}
  \end{itemize}
  
@@ -625,7 +626,8 @@ Recovery of perturbations - ``stimulus direction'' is possible by linearly decod
 
 Interestingly, increase in neuronal activity for subsequent trials for Gabor task. \\
 
-\textbf{Conclusions}
+\textbf{Conclusions} \\
+
 The open-loop data supports the idea that there are prediction error signals driven by top-down info, with different parts of the circuit engaging in different computations. \\
 
 The cumulative data in the field points strongly towards an unsupervised predictive hierarchical model in the neocortex. \\
@@ -642,7 +644,7 @@ Q. What is the somatic responses look like when the error responses are happenin
 
 Richards: Found a lot of variability in synaptic responses, but L5 pyramidal neurons showed fairly ``clear'' response in burst session that died over time - didn't mention it due to variability. \\
 
-Q. Recently @ Princeton, related study demonstrated specific responses (specific neuronal activity) did you find this? \\
+Q. A related study from Princeton demonstrated specific responses (specific neuronal activity) did you find this? \\
 
 Richards: Generally, different ROIs respond to different orientations, which is why we can decode. For the hallway, was some specificity, but no clear split between ``error neurons' and ``non-error neurons'' \\
 
@@ -656,7 +658,7 @@ Goal: explore future directions surrounding the intersection of AI and neuroscie
 
 Q. True or false: to truly understand the brian, one needs to study artifical intelligence.  \\
 
-A. \textbf{T: } BR, IF, YB, TL, $\sim$ CS, $\sim$ SG \textbf{F: }DS \\
+A. \textbf{T: } BR, IF, YB, TL $\mathbf{\sim}$\textbf{:} CS, SG \textbf{F: }DS \\
 
 SG: It's important to study the problems that are being tackled in AI and to understand the space of solutions - not necessarily overfit to solutions in AI. AI techniques are tractable and can be used to solve hard problems, but need to explore other possibilities. \\
 
