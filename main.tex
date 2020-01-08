@@ -129,7 +129,7 @@ Example: Successor Representations - discounted occupancy of a state (\cite{Daya
 
 Frontier: Option Discovery - Options can be designed (e.g. pre-programmed controllers in robotics), subgoals or secondary reward structures can be provided \cite{Sutton98}, intrinsic motivation. \\
 
-Bottleneck states: \cite{Solway2014} discover bottleneck states in navigation graph \& neural correlates, \& \textbf{random subgoals} require time \& data \cite{mann15} [what about self-supervised learning \& transfer-learning?], option-critic architecture \cite{BaconHP16} - results match or exceed Q-networks on atari. \\
+Bottleneck states: \cite{Solway2014} discover bottleneck states in navigation graph \& neural correlates, \& \textbf{random subgoals} require time \& data \cite{mann15} [what about self-supervised learning \& transfer-learning?], option-critic architecture \cite{BaconHP16} - results match or exceed Q-networks on atari games. \\
 
 \textbf{Conclusions}
 \begin{itemize}
@@ -177,10 +177,12 @@ More likely algorithms are weight perturbation \& activity perturbation - correl
 
 Q. Do/can existing biologically-motivated learning algorithms scale up to solve hard credit assignment problems? \\
 
-Constraints on learning rules:
+A. Short story: \textbf{NO} \cite{Bartunov18} \\
+
+Constraints on learning rules (color corresponds to level addressed):
 \begin{itemize}
     \item \textcolor{green}{No weight transport (e.g. with weight transposes)}
-    \item \textcolor{yellow}{No weight tying (e.g. with convolutional kernels)}
+    \item \textcolor{orange}{No weight tying (e.g. with convolutional kernels)}
     \item \textcolor{red}{Feedback of signed errors?}
     \item \textcolor{red}{Use continuous (rather than spiking) signals}
     \item \textcolor{red}{Violate Dale's law}
@@ -188,8 +190,6 @@ Constraints on learning rules:
     \item \textcolor{red}{Separate forward/backward passes}
     \item \textcolor{red}{Your personal complaint here...}
 \end{itemize}
-
-A. Short story: \textbf{NO} \cite{Bartunov18} \\
 
 Two approaches that learn the backward pathway \cite{Akrout19}: 
 \begin{itemize}
@@ -204,7 +204,7 @@ Weight Mirroring: described by two modes. \\
     \item $\delta_l = \phi'(y_l)B_{l+1}\delta_{l+1}$
     \item $\Delta W_{l+1} = -\eta_W \delta_{l+1}y_l^T$
 \end{itemize}
-``Mirror mode'' (like hebbian updates):
+``Mirror mode'' (like Hebbian updates):
 \begin{itemize}
     \item $y_l \sim N(0,I)$
     \item $\Delta B_{l+1} = \eta_B \delta_l \delta_{l+1}^T$
@@ -250,11 +250,11 @@ Addendum: How should we infer principles in the brain?
 
 Q. What's known about the accuracy to make the Pollack algorithm work? \\
 
-A. Nothing is known about the accuracy. Global correlative signal may not be sufficient to learn to solve hard problems. Backprop may be good enough. 
+A. Nothing is known about the accuracy. Global correlative signal may not be sufficient to learn to solve hard problems. Backprop may be good enough. \\
 
 Q. What dimensionality of error signal do you need to be able to send backwards to learn hard problems? \\
 
-A. The answer may be unknown. E.g. what can you get away with to learn to solve imagenet?  \\
+A. The answer may be unknown. E.g. what can you get away with to learn to solve Imagenet?  \\
 
 Q. What do you think about recent methods relaxing activations - noisy/auxiliary variable approaches. Address the issue of noisy activations (method of auxiliary coordinates, etc.) \\
 
@@ -321,7 +321,7 @@ Next slides on derivation of Reward-based e-prop from TD-Errors (RL-based, not f
 
 \subsubsection{10:30 - 11:00 Invited Talk: Computing and learning in the presence of neural noise by \textit{Dr. Cristina Savin}}
 
-Interface between machine learning and neuroscience: building parallels between artificial and biological circuits - often the focus is on similarity \& points of contact. This talk focuses on a fundamental difference: the precense of intrinsic noise. Trained neural networks correspond to deterministic functions. NOT the case for biological neurons across brain regions, which may react differently to repeated identical stimuli ``neural variability''. What does this computation mean? \\
+Interface between machine learning and neuroscience: building parallels between artificial and biological circuits - often the focus is on similarity \& points of contact. This talk focuses on a fundamental difference: the presence of intrinsic noise. Trained neural networks correspond to deterministic functions. NOT the case for biological neurons across brain regions, which may react differently to repeated identical stimuli ``neural variability''. What does this computation mean? \\
 
 Inescapable ``bug'' of biological wetware: the main computational challenge that the brain faces is overcoming its own internal noise via active reconfiguration. \\
 
@@ -334,7 +334,7 @@ This talk will introduce stochasticity for learning.
   \caption{Stochastic NN \& two tasks: autoencoder \& binary classification}
 \end{figure}
 
-Adding brownian noise too each neuron independently in the neural network.
+Adding Brownian noise to each neuron independently in the neural network.
 
 Goal: optimize \textcolor{blue}{task-specific} objective under \textcolor{green}{biological constraints} (regularization):
 $$
@@ -378,11 +378,11 @@ A. Equating the two - the output of the network is the only thing that matters.
 
 \subsubsection{11:00 - 11:30 Invited Talk: Universality and individuality in neural dynamics across large populations of recurrent networks by \textit{Dr. David Sussillo}}
 
-Treatment: neural networks as artifical model organisms. Can train neural networks to accomplish tasks analogous to those studied in animals, full spec. of paramters (as opposed to brains), utilize optimization, reverse engineering, ability to conduct huge experiments. \\
+Treatment: neural networks as artificial model organisms. Can train neural networks to accomplish tasks analogous to those studied in animals, full spec. of parameters (as opposed to brains), utilize optimization, reverse engineering, ability to conduct huge experiments. \\
 
 \cite{Churchland2012, Sussillo2015} a debate in systems neuroscience about whether or not firing rates in motor cortex encode kinematic parameters (target, location, velocity, etc.) or if there is an underlying dynamical system [LFADS].  \\
 
-Experiments provide a supporting sufficiency argument that driving muscles produces activations that look like motor cortex (many examples of using nns to understand how the brain functions - first is \cite{Zipser1988}) \\
+Experiments provide a supporting sufficiency argument that driving muscles produces activations that look like motor cortex (many examples of using neural networks to understand how the brain functions - first is \cite{Zipser1988}) \\
 
 The big assumption: Why do biological and artificial representations look similar in many cases?
 \begin{itemize}
@@ -394,7 +394,7 @@ The big assumption: Why do biological and artificial representations look simila
 
 Universality: e.g. Feigenbaum's delta\footnote{\url{https://en.wikipedia.org/wiki/Feigenbaum_constants}}
 
-Want to study a lot of RNNs \& learned architectures. Are any of these architectures better at reproducing neural dynamics compared to others? Yes! Studied 1000s of networks and systematically analyzed then by studying representational geometry (cca), fixed point topology, and linearized dynamics around fixed points. \\
+Want to study a lot of RNNs \& learned architectures. Are any of these architectures better at reproducing neural dynamics compared to others? Yes! Studied 1000s of networks and systematically analyzed then by studying representational geometry (CCA), fixed point topology, and linearized dynamics around fixed points. \\
 
 Many experiments on several simple tasks: 3-bit memory, oscillatory tasks speak to pattern generators, integration task speaks to decision making in the brain. \\
 
@@ -415,7 +415,7 @@ Can study linearized dynamics (recovered numerically) around fixed points. \\
 
 \textbf{Conclusions}
 \begin{itemize}
-\item Representational geometry differs between models.- thus geometry may be useful in piking models closer to biological circuits
+\item Representational geometry differs between models.- thus geometry may be useful in picking models closer to biological circuits
 \item The underlying fixed point topology may still be the same in the RNN (e.g. all models had line attractors in the integration task)
 \item Linearized dynamics appear very similar although minor differences
 \item These two may indicate universal solutions, and provide useful invariants across all networks
@@ -424,7 +424,7 @@ Can study linearized dynamics (recovered numerically) around fixed points. \\
 
 \textbf{Questions} \\
 
-Q. Be careful with what is called universality  \& results may come from the tasks. \\
+Q. Be careful with what is called universality  \& it's possible your results may come from the tasks. \\
 
 A. I disagree - the tasks do define the structures, but there do seem to be structures that are not hand designed over all the networks. \\
 
@@ -440,7 +440,7 @@ A. No, but that is a great line of future research.
 
 We know that neighboring points in visual space map to neighboring points in cortical space \cite{Wang2007}. \\
 
-Record $\sim$5000 neurons per area in visual area in response to $\sim$5000 images from iamgenet. Interested in mapping from input image + other variables to neural responses. The other variables include running speed, pupil dilation and pupil directions. The mapping function is chosen to be a convolutions neural network (VGG-16). Recover the hypercolumns. \\
+Record $\sim$5000 neurons per area in visual area in response to $\sim$5000 images from Imagenet. Interested in mapping from input image + other variables to neural responses. The other variables include running speed, pupil dilation and pupil directions. The mapping function is chosen to be a convolutions neural network (VGG-16). Recover the hypercolumns. \\
 
 C1. What is the right resolution of input images? \\
 
@@ -448,7 +448,7 @@ C2. Performance is sadly flat w.r.t hierarchical correspondence between VGG laye
 
 C3. Is the model describing responses at all? - Captures between 70 and 80 percent of variation \& exceed the performance of classical model. \\
 
-C5. Taking the exact same architecture with rith random weights, performance is pretty similar. - Is the goal with what you are training the network driving performance for predicting neural activity? - The number of layers is critical to match neural activity. \\
+C5. Taking the exact same architecture with with random weights, performance is pretty similar. - Is the goal with what you are training the network driving performance for predicting neural activity? - The number of layers is critical to match neural activity. \\
 
 \textbf{Conclusions}
 \begin{itemize}
@@ -495,6 +495,7 @@ A. Memory constraints \\
 \subsubsection{14:00-14:30 Invited Talk: Simultaneous rigidity and flexibility through modularity in cognitive maps for navigation by \textit{Dr. Ila Fiete}}
 
 \textbf{Outline:} \\
+
 Invariance/rigidity: the brain contains intrinsically low-dimensional representations that are invariant and rigid. \\
 
 Flexibility: principles by which invariant/rigid modules can provide high efficiency and flexibility. \\
@@ -515,7 +516,7 @@ Replacing something we don't understand with something else we don't understand?
 
 Trained a CNN to mimic salamander retina responses to natural scenes with good results - able to model retinal activity across salamanders. \\
 
-Try to go from deep networks to simple and interpretable subcircuits that are essential for generating reponses from stimuli via model reduction. Able to map these subcircuits to neuronal circuits. \\
+Try to go from deep networks to simple and interpretable sub-circuits that are essential for generating responses from stimuli via model reduction. Able to map these sub-circuits to neuronal circuits. \\
 
 \textbf{Conclusions}
 \begin{itemize}
@@ -548,7 +549,8 @@ A. Use gradient estimators - e.g. concrete relaxation (biased generator output) 
 \textbf{Issue}: results given for training data, couldn't get GAN to generalize on test data - did generalize on heteroscedastic synthetic data. \\
 
 \textbf{Summary} \\
-Attempt to capture both signal and noise in neural populations using GANs trained via REINFORCE. Future work extends the framework to recurrent or dynamical spiking models and transfer learning and comparison with other deep latent models.
+
+Attempt to capture both signal and noise in neural populations using GANs trained via REINFORCE. Future work extends the framework to recurrent or dynamical spiking models and transfer learning and comparison with other deep latent models. \\
 
 \textbf{Questions} \\
 
@@ -580,7 +582,7 @@ Propose a meta-learning approach. \\
 \end{enumerate}
 The hope is that by introducing feedback matrices, we enable deep credit assignment which enables doing more than just feature reuse (and maybe tells us something about biological credit assignment). \\
 
-Tried this approach on two ``families'' of tasks: multiple sinosoidal regression and one-shot classification tasks with hebbian inner updates and varying number of ``plastic'' layers. \\
+Tried this approach on two ``families'' of tasks: multiple sinusoidal regression and one-shot classification tasks with Hebbian inner updates and varying number of ``plastic'' layers. \\
 
 \textbf{Questions} \\ 
 
@@ -656,7 +658,7 @@ Pannelists: Yoshua Bengio, Blake Richards, Timothy Lillicrap,  Ila Fiete, David 
 
 Goal: explore future directions surrounding the intersection of AI and neuroscience \\
 
-Q. True or false: to truly understand the brian, one needs to study artifical intelligence.  \\
+Q. True or false: to truly understand the brain, one needs to study artificial intelligence.  \\
 
 A. \textbf{T: } BR, IF, YB, TL $\mathbf{\sim}$\textbf{:} CS, SG \textbf{F: }DS \\
 
@@ -664,7 +666,7 @@ SG: It's important to study the problems that are being tackled in AI and to und
 
 BR: Agree, broad question: are there general principles of intelligence (I think there are) one way is to engineer systems that behave in an intelligent manner. AI $\rightarrow$ engineer intelligent systems, Neuro $\rightarrow$ understand biological mechanisms that underpin intelligence. Seems like both are needed to get at general principles that apply to both. \\
 
-CS: What do people mean about understanding brains? Understanding intelligence? E.g. mechanistic models \&  clinical models may not need AI to undestand the brain. \\
+CS: What do people mean about understanding brains? Understanding intelligence? E.g. mechanistic models \&  clinical models may not need AI to understand the brain. \\
 
 DS: Pedantic - probably don't \textbf{need} to study AI. It's also possible that AI could mislead us. \\
 
@@ -686,7 +688,7 @@ SG: Thinks we are overfitting to our current understanding of AI systems. \\
 
 BR: Disagree. If anything NNs will be worse than the brain - evolution has no motivation to produce ``scrutable stuff''. \\
 
-SG: It does need to create robust stuff, but we hope robustness leads to scruitability. \\
+SG: It does need to create robust stuff, but we hope robustness leads to scrutability. \\
 
 TL: But what needs to lead to robust stuff? Representations, behaviors, \textbf{learning rules}, etc. \\
 
@@ -712,7 +714,7 @@ SG: Handicap ml - what if you can only measure the activities of neurons given t
 
 TL: My lab is working on this. \\
 
-YB: About multiple modules that have different objectve functions - people in machine learning are studying this too (GANS, multi-agent learning within a system), studying how to go from a single object to a multi-agent-like setting. \\
+YB: About multiple modules that have different objective functions - people in machine learning are studying this too (GANS, multi-agent learning within a system), studying how to go from a single object to a multi-agent-like setting. \\
 
 Q. Appreciate biological theories to account for how the brain might work - also interested in neuromorphic computing on-chip. Rarely hear about this in the ML community. Do you believe in this approach? \\
 
@@ -720,13 +722,13 @@ YB: A lot of work, unfortunately these techniques ignore the ML perspective prec
 
 DS: Once we figure how to spiking NNs, neuromorphic computing may take off. \\
 
-Q. Beyone neurmorphic chips, what are the key principles that we learn from neuroscience that might influence new principles in ml and visa-versa? \\
+Q. Beyone neuromorphic chips, what are the key principles that we learn from neuroscience that might influence new principles in ml and visa-versa? \\
 
-IF: Simple networks that exist in the brain and can be repurposed - reuse of multiple modules. \\
+IF: Simple networks that exist in the brain and can be re-purposed - reuse of multiple modules. \\
 
 DS: Uncommon intuitions: we don't have a clue about how to handle memory in artificial systems. Biological influence may be reasonable. \\
 
-YB: Agree. Piecewiselinear narrative came from (in my group) from something we thought was closed to neuroscience. Personally interested in what we can learn from neuroscience at the level of memory, attention, system-2 processing. Many things that can suggest techniques and explorations in ML. \\
+YB: Agree. Piecewise linear narrative came from (in my group) something we thought was closed to neuroscience. Personally interested in what we can learn from neuroscience at the level of memory, attention, system-2 processing. Many things that can suggest techniques and explorations in ML. \\
 
 BR: Critical. Architectures is a huge thing - architecture optimization is very difficult, and many of the most successful architectures (convnets) inspired biologically. \\
 
